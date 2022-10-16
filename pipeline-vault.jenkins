@@ -1,0 +1,16 @@
+pipeline
+{
+    agent any
+    options{
+        disableConcurrentBuilds()
+            }
+    stages{   
+      stage('Vault') {
+        steps{
+          withVault(configuration: [timeout: 60, vaultCredentialId: 'vault-approle-jenkins-test', vaultUrl: 'http://vault-internal:8200'], vaultSecrets: [[engineVersion: 2, path: 'secret/webapp/config', secretValues: [[envVar: 'password', vaultKey: 'password']]]]) {
+              sh "echo ${env.password}"
+          }
+        }  
+      }
+    }
+}
