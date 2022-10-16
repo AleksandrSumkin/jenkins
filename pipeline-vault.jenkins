@@ -8,7 +8,7 @@ pipeline
       stage('Vault') {
         steps{
           withVault(configuration: [timeout: 60, vaultCredentialId: 'vault-approle-jenkins-test', vaultUrl: 'http://vault-internal.default.svc.cluster.local:8200'], vaultSecrets: [[engineVersion: 2, path: 'secret/webapp/config', secretValues: [[envVar: 'password', vaultKey: 'password']]]]) {
-              sh "echo ${env.password}"
+              sh ('echo ${env.password}')
               print 'password.collect { it }=' + password.collect { it }
           }
         }  
